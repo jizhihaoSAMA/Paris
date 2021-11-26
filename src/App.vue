@@ -1,10 +1,25 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
+    <right-navbar />
+    <div id="app">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
+
+<script>
+import RightNavbar from '@/components/RightNavbar'
+
+export default {
+  components: {
+    RightNavbar
+  }
+}
+
+</script>
+
 
 <style>
 #app {
