@@ -7,20 +7,21 @@
           @click="$router.push((path = href))"
           :key="text"
           variant="link"
-          style="margin: 3% 0"
+          :style="
+            (is_split ? 'margin: -0.5rem 0' : 'margin: 1rem 0') + ';padding:0;'
+          "
           class="text-decoration-none"
           :disabled="is_split"
           v-b-popover.hover.left="text"
         >
-          <hr v-if="is_split" />
-          <b-iconstack font-scale="1.3" v-else-if="icons.length == 1">
+          <hr v-if="is_split" style="border: 1px dotted #999 !important" />
+          <b-iconstack font-scale="1.8" v-else-if="icons.length == 1">
             <b-icon stacked :icon="icons[0]"></b-icon>
           </b-iconstack>
           <b-iconstack font-scale="1" v-else-if="icons.length == 2">
             <b-icon stacked :icon="icons[0]" shift-v="2" shift-h="-2"></b-icon>
             <b-icon stacked :icon="icons[1]" shift-v="-2" shift-h="2"></b-icon>
           </b-iconstack>
-
         </b-button>
       </b-button-group>
     </div>
@@ -38,14 +39,9 @@ export default {
           href: "profile",
         },
         {
-          icons: ["heart"],
+          icons: ["bookmark-heart"],
           text: "我喜爱的房源",
           href: "love",
-        },
-        {
-          icons: [""],
-          text: "",
-          href: "",
         },
         {
           is_split: true,
@@ -59,6 +55,13 @@ export default {
           icons: ["headphones"],
           text: "联系客服",
           href: "Contact",
+        },
+        {
+          is_split: true,
+        },
+        {
+          icons: ["arrow-up"],
+          text: "回到顶部",
         },
       ],
     };
@@ -77,6 +80,8 @@ export default {
   text-align: center;
   display: flex;
   align-items: center;
+  background: white;
+  z-index: 99;
 }
 
 #right-navbar-items {
