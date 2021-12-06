@@ -16,11 +16,11 @@
         <b-col cols="10">
           <b-tabs align="right" pills>
             <b-tab
-              v-for="{ title } in tabs"
+              v-for="{ title, href } in tabs"
               :key="title"
               :title="title"
               no-body
-              aria-selected="false"
+              @click="$router.push((path = href))"
             ></b-tab>
           </b-tabs>
         </b-col>
@@ -43,56 +43,82 @@
         <b-col cols="8" class="text-center">
           <b-input-group>
             <b-form-input
+              v-model="search_key_word"
               placeholder="请输入区域、商圈或者小区名开始找房"
+              @focus="toggle_suggestion(true)"
+              @blur="toggle_suggestion(false)"
+              @input="get_suggestion_list()"
             ></b-form-input>
             <b-input-group-append>
               <b-button variant="primary">搜索房源</b-button>
             </b-input-group-append>
           </b-input-group>
+          <b-list-group id="search-result" v-show="this.show_suggestion">
+            <b-list-group-item
+              v-for="suggestion in suggestion_list"
+              :key="suggestion"
+              v-text="suggestion"
+              style="color: grey; text-align: left"
+            ></b-list-group-item>
+          </b-list-group>
         </b-col>
       </b-row>
     </b-container>
-    <b-container id="home-intro" fluid class="pt-5 text-center fade-in-anime">
+    <b-container
+      id="home-intro"
+      fluid
+      class="pt-5 pb-5 text-center"
+      style="min-height: 800px"
+      :style="'height:' + this.height + 'px'"
+    >
       <div
         class="m-5"
         style="height: 150px"
+        v-b-visible.once="
+          (v) => {
+            fade_in(v, 'show_title')
+          }
+        "
         :class="show_title ? 'fade-in-anime downward-anime' : ''"
       >
-        <span
-          class="custom-header"
-          v-b-visible.1000.once="
-            (v) => {
-              fade_in(v, 'show_title');
-            }
-          "
-          >为什么选择我们?
-        </span>
+        <span class="custom-header">为什么选择我们? </span>
       </div>
       <div :class="show_intro ? 'fade-in-anime downward-anime' : ''">
         <b-container fluid>
-          <b-row align-h="center">
+          <b-row align-h="center" align-content="">
             <b-col
               cols="3"
-              v-for="{ icon, description } in descriptions"
+              v-for="{ icon, title, description, link } in descriptions"
               :key="description"
-              v-b-visible.1000.once="
+              class="p-5 m-1"
+              style="border: 1px solid; border-radius: 2%"
+              v-b-visible.once="
                 (v) => {
-                  fade_in(v, 'show_intro');
+                  fade_in(v, 'show_intro')
                 }
               "
             >
               <b-row align-h="center">
                 <b-col cols="4">
-                  <b-icon :icon="icon" font-scale="4"></b-icon>
+                  <b-icon :icon="icon" font-scale="3.5"></b-icon>
                 </b-col>
               </b-row>
+              <h3 v-text="title" class="mt-4"></h3>
               <b-row class="mt-5">
                 <b-col cols="12" v-html="description"></b-col>
               </b-row>
+              <div class="mt-5">
+                <b-link
+                  v-text="link.title"
+                  v-if="link"
+                  :href="link.href"
+                ></b-link>
+              </div>
             </b-col>
           </b-row>
         </b-container>
       </div>
+      <b-container> </b-container>
     </b-container>
     <!-- <img alt="Vue logo" src="@/assets/background.jpeg"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
@@ -101,7 +127,6 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   data() {
@@ -109,69 +134,100 @@ export default {
       house_count: 20100,
       show_title: false,
       show_intro: false,
+      show_suggestion: false,
       height: null,
-      tabs: [
-        {
-          title: "首页",
-        },
-        {
-          title: "我要租房",
-        },
-        {
-          title: "发布房源",
-        },
-        {
-          title: "工具",
-        },
-      ],
+      search_key_word: '',
+      suggestion_list: ['未查询到相关内容'],
+      tabs: this.$store.state.tabs,
       descriptions: [
         {
-          icon: "shield-check",
+          icon: 'shield-check',
+          title: '房源真实',
           description:
-            "房东需经过 <b>身份认证</b>，房屋经过实体考量，房源绝对真实。如家真实房源，假一罚十",
+            '房东需经过 <b>身份认证</b>，房屋经过实体考量，房源绝对真实。如家真实房源，假一罚十',
+          link: {
+            href: '/feedback',
+            title: '有虚假房源, 我要反馈 >>',
+          },
         },
         {
-          icon: "trophy",
+          icon: 'trophy',
+          title: '销量领先',
           description:
-            "连续5年获得 <b>全国房屋租赁冠军</b> 租赁交易成交数一直稳居于全国第一。",
+            '连续5年获得 <b>全国房屋租赁交易冠军</b> 租赁交易成交数一直稳居于全国第一',
         },
         {
-          icon: "heart",
+          icon: 'heart',
+          title: '服务贴心',
           description:
-            "客服 <b>24小时</b> 在线，您可随时提出您的疑问，我们将为您提供贴心的服务",
+            '客服 <b>24小时</b> 在线，您可随时提出您的疑问，我们将为您提供贴心的服务',
+          link: {
+            href: '/contact',
+            title: '联系客服 >>',
+          },
         },
       ],
-    };
+    }
   },
-  name: "Home",
+  name: 'Home',
   methods: {
     fade_in(v, variable) {
-      eval("this." + variable + " = " + v);
+      // console.log(v, variable)
+      eval('this.' + variable + ' = ' + v)
+    },
+    request_key_word() {
+      if (this.search_key_word == '') {
+        return ['未查询到相关内容']
+      }
+      return [
+        this.search_key_word + '的结果1',
+        this.search_key_word + '的结果2',
+        this.search_key_word + '的结果2',
+        this.search_key_word + '的结果2',
+        this.search_key_word + '的结果2',
+      ]
+    },
+    get_suggestion_list() {
+      this.suggestion_list = this.request_key_word()
+    },
+    toggle_suggestion(val) {
+      this.show_suggestion = val
     },
   },
-  components: {
-    HelloWorld,
-  },
+  components: {},
   mounted() {
-    this.height = document.documentElement.clientHeight;
-    console.log(this.height);
+    this.height = document.documentElement.clientHeight
+    console.log(this.height)
   },
-};
+}
 </script>
 
 <style scope>
+#search-result {
+  background: white;
+  border-radius: 0 0 10px 10px;
+  display: fixed;
+  z-index: 2;
+  font-size: 0.3rem;
+}
+
+#search-result > .list-group-item {
+  padding: 0.5rem 0.5rem;
+}
+
 #home-intro {
-  height: 2000px;
+  /* height: 2000px; */
   background: white;
   text-align: center;
 }
+
 #home-nav {
   color: white;
   height: 100%;
 }
 
 #home-background-image {
-  background: url("../../assets/background.jpeg") no-repeat;
+  background: url('../../assets/background.jpeg') no-repeat;
   background-position: 55% 50%;
   /* background-size: 100% 100%; */
   width: 100%;
@@ -194,7 +250,7 @@ export default {
 }
 
 .fade-in-anime {
-  animation: fade-in 2s 1;
+  animation: fade-in 3s 1;
 }
 
 @keyframes fade-in {
@@ -212,7 +268,7 @@ export default {
 
 @keyframes downward {
   from {
-    top: -5%;
+    top: -10%;
     position: relative;
   }
   to {
