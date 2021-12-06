@@ -1,21 +1,22 @@
 <template>
   <div>
     <right-navbar />
-    <router-view/>
+    <router-view />
+    <page-footer />
   </div>
 </template>
 
 <script>
 import RightNavbar from '@/components/RightNavbar'
+import PageFooter from '@/components/PageFooter.vue'
 
 export default {
   components: {
-    RightNavbar
-  }
+    RightNavbar,
+    PageFooter,
+  },
 }
-
 </script>
-
 
 <style>
 #app {

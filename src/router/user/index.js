@@ -1,7 +1,10 @@
 const userRoutes = [{
     path: '/profile',
     name: 'profile',
-    components: () => import(""),
+    meta: {
+        required_auth: true,
+    },
+    components: () => import("@/views/user/Profile"),
 }]
 
 export default userRoutes
