@@ -41,26 +41,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="8" class="text-center">
-          <b-input-group>
-            <b-form-input
-              v-model="search_key_word"
-              placeholder="请输入区域、商圈或者小区名开始找房"
-              @focus="toggle_suggestion(true)"
-              @blur="toggle_suggestion(false)"
-              @input="get_suggestion_list()"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-button variant="primary">搜索房源</b-button>
-            </b-input-group-append>
-          </b-input-group>
-          <b-list-group id="search-result" v-show="this.show_suggestion">
-            <b-list-group-item
-              v-for="suggestion in suggestion_list"
-              :key="suggestion"
-              v-text="suggestion"
-              style="color: grey; text-align: left"
-            ></b-list-group-item>
-          </b-list-group>
+          <search-box />
         </b-col>
       </b-row>
     </b-container>
@@ -127,6 +108,7 @@
 
 <script>
 // @ is an alias to /src
+import searchBox from '@/components/SearchBox'
 
 export default {
   data() {
@@ -134,10 +116,7 @@ export default {
       house_count: 20100,
       show_title: false,
       show_intro: false,
-      show_suggestion: false,
       height: null,
-      search_key_word: '',
-      suggestion_list: ['未查询到相关内容'],
       tabs: this.$store.state.tabs,
       descriptions: [
         {
@@ -175,45 +154,18 @@ export default {
       // console.log(v, variable)
       eval('this.' + variable + ' = ' + v)
     },
-    request_key_word() {
-      if (this.search_key_word == '') {
-        return ['未查询到相关内容']
-      }
-      return [
-        this.search_key_word + '的结果1',
-        this.search_key_word + '的结果2',
-        this.search_key_word + '的结果2',
-        this.search_key_word + '的结果2',
-        this.search_key_word + '的结果2',
-      ]
-    },
-    get_suggestion_list() {
-      this.suggestion_list = this.request_key_word()
-    },
-    toggle_suggestion(val) {
-      this.show_suggestion = val
-    },
   },
-  components: {},
+  components: {
+    searchBox,
+  },
   mounted() {
     this.height = document.documentElement.clientHeight
-    console.log(this.height)
+    // console.log(this.height)
   },
 }
 </script>
 
 <style scope>
-#search-result {
-  background: white;
-  border-radius: 0 0 10px 10px;
-  display: fixed;
-  z-index: 2;
-  font-size: 0.3rem;
-}
-
-#search-result > .list-group-item {
-  padding: 0.5rem 0.5rem;
-}
 
 #home-intro {
   /* height: 2000px; */
