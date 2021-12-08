@@ -166,7 +166,6 @@ export default {
 </script>
 
 <style scope>
-
 #home-intro {
   /* height: 2000px; */
   background: white;
@@ -176,11 +175,12 @@ export default {
 #home-nav {
   color: white;
   height: 100%;
+  max-height: 855px;
 }
 
 #home-background-image {
   background: url('../../assets/background.jpeg') no-repeat;
-  background-position: 55% 50%;
+  background-position: 50% 50%;
   /* background-size: 100% 100%; */
   width: 100%;
   position: fixed;

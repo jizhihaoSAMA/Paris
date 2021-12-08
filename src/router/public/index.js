@@ -10,7 +10,7 @@ const publicRoutes = [
     component: () => import('@/views/public/Index.vue'),
     children: [
       {
-        path: 'house',
+        path: 'house/',
         name: 'house',
         component: () => import('@/components/HouseFrame.vue'),
       },

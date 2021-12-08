@@ -14,26 +14,23 @@
         </b-col>
       </b-row>
     </b-container>
-
-    <b-tabs>
-      <b-tab v-for="{ area } in location" v-text="area" :key="area"></b-tab>
-    </b-tabs>
+    <nav-filter />
   </div>
 </template>
 
 <script>
 import searchBox from '@/components/SearchBox'
+import NavFilter from './NavFilter.vue'
 
 export default {
   data() {
-    return {
-      location: require('@/assets/city_name2code.json'),
-    }
+    return {}
   },
   components: {
     searchBox,
+    NavFilter,
   },
 }
 </script>
 
-<style></style>
+<style scoped></style>

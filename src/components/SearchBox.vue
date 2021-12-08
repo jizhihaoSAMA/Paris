@@ -63,7 +63,6 @@ export default {
   },
   mounted() {
     this.width = this.$refs.input_box.$el.offsetWidth
-    console.log(this.width)
   },
 }
 </script>
