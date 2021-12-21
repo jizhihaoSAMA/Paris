@@ -15,12 +15,14 @@
       </b-row>
     </b-container>
     <nav-filter />
+    <list-group />
   </div>
 </template>
 
 <script>
 import searchBox from '@/components/SearchBox'
 import NavFilter from './NavFilter.vue'
+import ListGroup from './ListGroup.vue'
 
 export default {
   data() {
@@ -29,6 +31,7 @@ export default {
   components: {
     searchBox,
     NavFilter,
+    ListGroup,
   },
 }
 </script>

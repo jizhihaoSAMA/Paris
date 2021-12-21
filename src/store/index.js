@@ -17,11 +17,6 @@ export default new Vuex.Store({
         name: 'house',
       },
       {
-        title: '商业办公',
-        href: '/index/office',
-        name: 'office',
-      },
-      {
         title: '发布房源',
         href: '/post',
         name: 'post',
@@ -32,7 +27,6 @@ export default new Vuex.Store({
         name: 'tool',
       },
     ],
-    
   },
   mutations: {},
   actions: {},

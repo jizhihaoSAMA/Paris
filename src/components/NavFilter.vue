@@ -99,6 +99,18 @@
             v-model="price_range"
             class="custom-control-inline"
             :value="null"
+            @change="
+              () => {
+                let new_query = JSON.parse(JSON.stringify(this.$route.query))
+                delete new_query.price_end
+                delete new_query.price_start
+                $router.replace({
+                  query: {
+                    ...new_query,
+                  },
+                })
+              }
+            "
             >不限</b-form-radio
           >
           <b-form-radio
@@ -137,7 +149,17 @@
     <hr class="split-line" />
     <b-row>
       <b-col cols="1"><p class="filter-header">房屋特色:</p></b-col>
-      <b-col cols="11"
+      <b-col cols="11">
+        <b-button
+          style="float: right"
+          pill
+          @click="
+            () => {
+              special_tag_selected = []
+              changed_special_tag()
+            }
+          "
+          >清空筛选</b-button
         ><b-form-checkbox-group
           :options="special_tag"
           value-field="tag"
@@ -145,9 +167,10 @@
           v-model="special_tag_selected"
           @change="changed_special_tag"
           style="padding: 0.3rem"
-        ></b-form-checkbox-group
-      ></b-col>
+        ></b-form-checkbox-group>
+      </b-col>
     </b-row>
+    <hr class="split-line" />
   </b-container>
 </template>
 
@@ -157,7 +180,9 @@ export default {
     return {
       selected_street: null,
       price_range:
-        this.$route.query.price_start + ',' + this.$route.query.price_end,
+        this.$route.query.price_start || this.$route.query.price_end
+          ? this.$route.query.price_start + ',' + this.$route.query.price_end
+          : null,
       location: require('@/assets/city_name2code.json'),
 
       rent_type: [
@@ -206,20 +231,17 @@ export default {
   },
   methods: {
     changed_special_tag() {
-      // 将选择到的设置为1
-      let _ = {}
-      this.special_tag_selected.forEach((item, index) => {
-        _[item] = 1
-      })
-
-      // 删除存在且未被选中的
       let new_query = JSON.parse(JSON.stringify(this.$route.query))
-      // todo
-
+      this.special_tag.forEach((item, index) => {
+        if (this.special_tag_selected.indexOf(item.tag) != -1) {
+          new_query[item.tag] = 1
+        } else {
+          delete new_query[item.tag]
+        }
+      })
       this.$router.replace({
         query: {
           ...new_query,
-          ..._,
         },
       })
     },
@@ -252,7 +274,7 @@ export default {
 
 .filter-header {
   padding: 0.3rem 0rem;
-  font-size: 0.9rem;
+  font-size: 0.9vh;
   float: right;
   font-weight: 800;
 }
