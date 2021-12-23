@@ -4,7 +4,7 @@
       <b-button-group vertical>
         <b-button
           v-for="{ icons, text, href, is_split } in button_infos"
-          @click="$router.push((path = href))"
+          @click="$router.push((name = href))"
           :key="text"
           variant="link"
           :style="
@@ -34,40 +34,40 @@ export default {
     return {
       button_infos: [
         {
-          icons: ["person"],
-          text: "我的信息",
-          href: "profile",
+          icons: ['person'],
+          text: '我的信息',
+          href: 'profile',
         },
         {
-          icons: ["bookmark-heart"],
-          text: "我喜爱的房源",
-          href: "love",
-        },
-        {
-          is_split: true,
-        },
-        {
-          icons: ["house-door", "house-door-fill"],
-          text: "房屋对比",
-          href: "compare",
-        },
-        {
-          icons: ["headphones"],
-          text: "联系客服",
-          href: "Contact",
+          icons: ['bookmark-heart'],
+          text: '我喜爱的房源',
+          href: 'love',
         },
         {
           is_split: true,
         },
         {
-          icons: ["arrow-up"],
-          text: "回到顶部",
+          icons: ['house-door', 'house-door-fill'],
+          text: '房屋对比',
+          href: 'compare',
+        },
+        {
+          icons: ['headphones'],
+          text: '联系客服',
+          href: 'Contact',
+        },
+        {
+          is_split: true,
+        },
+        {
+          icons: ['arrow-up'],
+          text: '回到顶部',
         },
       ],
-    };
+    }
   },
   mounted() {},
-};
+}
 </script>
 
 <style>

@@ -4,7 +4,7 @@
       <b-row align-v="center">
         <b-col cols="3" style="padding: 40px">
           <b-img
-            :src="require('@/assets/logo.png')"
+            :src="require('@/assets/logo_orange.png')"
             fluid-grow
             @click="$router.replace({ name: 'home' }).catch((err) => {})"
           />

@@ -62,7 +62,7 @@ export default {
 }
 
 .header-li {
-  margin-right: 22px;
+  margin-left: 22px;
   display: inline-block;
 }
 </style>
