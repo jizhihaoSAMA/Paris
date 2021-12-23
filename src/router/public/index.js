@@ -10,7 +10,7 @@ const publicRoutes = [
     component: () => import('@/views/public/Index.vue'),
     children: [
       {
-        path: 'house/',
+        path: 'house',
         name: 'house',
         component: () => import('@/components/HouseFrame.vue'),
       },
@@ -24,7 +24,7 @@ const publicRoutes = [
   {
     path: '/detail/:house_id',
     name: 'detail',
-    component: () => import('@/views/public/Detail.vue'),
+    component: () => import('@/components/HouseDetail.vue'),
   },
 ]
 

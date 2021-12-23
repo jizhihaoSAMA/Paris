@@ -35,7 +35,7 @@
           <h1 style="font-weight: 1000; font-size: 3.5rem">给予如家一般温暖</h1>
           <p>
             目前在租房屋共计
-            <span v-text="house_count">{{ house_count }}</span> 个
+            <span>{{ house_count }}</span> 个
           </p>
         </b-col>
       </b-row>
@@ -49,7 +49,7 @@
       id="home-intro"
       fluid
       class="pt-5 pb-5 text-center"
-      style="min-height: 800px"
+      style="min-height: 800px; max-height: 900px"
       :style="'height:' + this.height + 'px'"
     >
       <div
@@ -81,7 +81,7 @@
             >
               <b-row align-h="center">
                 <b-col cols="4">
-                  <b-icon :icon="icon" font-scale="3.5"></b-icon>
+                  <b-icon :icon="icon" font-scale="2.5"></b-icon>
                 </b-col>
               </b-row>
               <h3 v-text="title" class="mt-4"></h3>
@@ -113,7 +113,7 @@ import searchBox from '@/components/SearchBox'
 export default {
   data() {
     return {
-      house_count: 20100,
+      house_count: '我也不知道多少',
       show_title: false,
       show_intro: false,
       height: null,
