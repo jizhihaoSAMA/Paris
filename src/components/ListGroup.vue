@@ -30,8 +30,17 @@
               <b-carousel-slide
                 v-for="url in get_image_list(item.id)"
                 :key="url"
-                :img-src="url"
               >
+                <b-img-lazy
+                  slot="img"
+                  :src="url"
+                  fluid
+                  :width="image_width"
+                  :height="image_height"
+                  blank-color="#bbb"
+                  blank
+                  center
+                />
               </b-carousel-slide>
             </b-carousel>
             <b-list-group-item>
@@ -141,17 +150,84 @@ export default {
           price: 2300,
           neiborghood_geo: '距离地铁站1km',
         },
+        {
+          id: 5,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 6,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 7,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 11,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 12,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
       ],
+      image_width: 400,
+      image_height: 300,
       total_count: 103,
     }
   },
   methods: {
     get_image_list(id) {
-      var width = 400
-      var height = 300
       var images = []
       for (let i = id, count = 0; count < 3; i = i * 8, count++) {
-        images.push(`https://picsum.photos/${width}/${height}/?image=${i}`)
+        images.push(
+          `https://picsum.photos/${this.image_width}/${this.image_height}/?image=${i}`,
+        )
       }
       return images
     },
