@@ -13,9 +13,8 @@
           <search-box />
         </b-col>
       </b-row>
+      <router-view />
     </b-container>
-    <nav-filter />
-    <list-group />
   </div>
 </template>
 

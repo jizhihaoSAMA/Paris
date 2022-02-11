@@ -13,18 +13,20 @@ const publicRoutes = [
         path: 'house',
         name: 'house',
         component: () => import('@/components/HouseFrame.vue'),
-      },
-      {
-        path: 'office',
-        name: 'office',
-        component: () => import('@/components/OfficeFrame.vue'),
+        children: [
+          {
+            path: '/detail/:house_id',
+            name: 'detail',
+            component: () => import('@/components/HouseDetail.vue'),
+          },
+          {
+            path: '',
+            name: 'list_group',
+            component: () => import('@/components/ListGroup.vue'),
+          },
+        ],
       },
     ],
-  },
-  {
-    path: '/detail/:house_id',
-    name: 'detail',
-    component: () => import('@/components/HouseDetail.vue'),
   },
 ]
 

@@ -1,5 +1,7 @@
 <template>
   <div style="padding: 20px 0">
+    <nav-filter />
+    <ad-or-campaign />
     <b-container>
       <h5 style="margin: 20px 0">共找到相应结果 {{ total_count }} 条</h5>
       <b-row>
@@ -40,6 +42,7 @@
                   blank-color="#bbb"
                   blank
                   center
+                  class="item_image"
                 />
               </b-carousel-slide>
             </b-carousel>
@@ -93,6 +96,8 @@
 </template>
 
 <script>
+import AdOrCampaign from './AdOrCampaign.vue'
+import NavFilter from './NavFilter.vue'
 export default {
   data() {
     return {
@@ -243,6 +248,10 @@ export default {
       this.$refs[index][0].interval = 0
       e.target.children[0].children[1].style.display = 'none'
     },
+  },
+  components: {
+    NavFilter,
+    AdOrCampaign,
   },
 }
 </script>
