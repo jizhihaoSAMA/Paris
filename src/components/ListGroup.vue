@@ -1,5 +1,7 @@
 <template>
   <div style="padding: 20px 0">
+    <nav-filter />
+    <ad-or-campaign />
     <b-container>
       <h5 style="margin: 20px 0">共找到相应结果 {{ total_count }} 条</h5>
       <b-row>
@@ -30,8 +32,18 @@
               <b-carousel-slide
                 v-for="url in get_image_list(item.id)"
                 :key="url"
-                :img-src="url"
               >
+                <b-img-lazy
+                  slot="img"
+                  :src="url"
+                  fluid
+                  :width="image_width"
+                  :height="image_height"
+                  blank-color="#bbb"
+                  blank
+                  center
+                  class="item_image"
+                />
               </b-carousel-slide>
             </b-carousel>
             <b-list-group-item>
@@ -84,6 +96,9 @@
 </template>
 
 <script>
+import AdOrCampaign from './AdOrCampaign.vue'
+import NavFilter from './NavFilter.vue'
+
 export default {
   data() {
     return {
@@ -141,17 +156,84 @@ export default {
           price: 2300,
           neiborghood_geo: '距离地铁站1km',
         },
+        {
+          id: 5,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 6,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 7,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 11,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
+        {
+          id: 12,
+          is_full_rent: true,
+          neiborghood: '你好小区',
+          room_amount: 3,
+          room_name: '南卧',
+          size: 12,
+          located_floor: 3,
+          total_floor: 6,
+          special_tags: ['深呼吸1.0', '新校区', '可短签'],
+          price: 2300,
+          neiborghood_geo: '距离地铁站1km',
+        },
       ],
+      image_width: 400,
+      image_height: 300,
       total_count: 103,
     }
   },
   methods: {
     get_image_list(id) {
-      var width = 400
-      var height = 300
       var images = []
       for (let i = id, count = 0; count < 3; i = i * 8, count++) {
-        images.push(`https://picsum.photos/${width}/${height}/?image=${i}`)
+        images.push(
+          `https://picsum.photos/${this.image_width}/${this.image_height}/?image=${i}`,
+        )
       }
       return images
     },
@@ -167,6 +249,10 @@ export default {
       this.$refs[index][0].interval = 0
       e.target.children[0].children[1].style.display = 'none'
     },
+  },
+  components: {
+    NavFilter,
+    AdOrCampaign,
   },
 }
 </script>
