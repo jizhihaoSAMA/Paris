@@ -11,9 +11,12 @@
       ></b-form-input>
       <b-input-group-append>
         <b-button variant="primary">搜索房源</b-button>
-        <b-button variant="info"
-          ><b-icon icon="map"></b-icon> 地图找房</b-button
+        <b-button
+          variant="info"
+          @click="$router.push((name='map'))"
         >
+          <b-icon icon="map"></b-icon> 地图找房
+        </b-button>
       </b-input-group-append>
     </b-input-group>
     <b-list-group
@@ -33,7 +36,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       show_suggestion: false,
       search_key_word: '',
@@ -42,7 +45,7 @@ export default {
     }
   },
   methods: {
-    request_key_word() {
+    request_key_word () {
       if (this.search_key_word == '') {
         return ['未查询到相关内容']
       }
@@ -54,14 +57,14 @@ export default {
         this.search_key_word + '的结果2',
       ]
     },
-    get_suggestion_list() {
+    get_suggestion_list () {
       this.suggestion_list = this.request_key_word()
     },
-    toggle_suggestion(val) {
+    toggle_suggestion (val) {
       this.show_suggestion = val
     },
   },
-  mounted() {
+  mounted () {
     this.width = this.$refs.input_box.$el.offsetWidth
   },
 }

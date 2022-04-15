@@ -2,7 +2,10 @@
   <div>
     <b-container>
       <b-row align-v="center">
-        <b-col cols="3" style="padding: 40px">
+        <b-col
+          cols="3"
+          style="padding: 40px"
+        >
           <b-img
             :src="require('@/assets/logo_orange.png')"
             fluid-grow
@@ -22,15 +25,17 @@
 import searchBox from '@/components/SearchBox'
 import NavFilter from './NavFilter.vue'
 import ListGroup from './ListGroup.vue'
+import HouseDetail from './HouseDetail.vue'
 
 export default {
-  data() {
+  data () {
     return {}
   },
   components: {
     searchBox,
     NavFilter,
     ListGroup,
+    HouseDetail,
   },
 }
 </script>

@@ -5,6 +5,16 @@ const publicRoutes = [
     component: () => import('@/views/public/Home.vue'),
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/public/Login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/public/Register.vue')
+  },
+  {
     path: '/index/',
     name: 'index',
     component: () => import('@/views/public/Index.vue'),
@@ -15,7 +25,7 @@ const publicRoutes = [
         component: () => import('@/components/HouseFrame.vue'),
         children: [
           {
-            path: '/detail/:house_id',
+            path: 'detail/:house_id',
             name: 'detail',
             component: () => import('@/components/HouseDetail.vue'),
           },
@@ -26,6 +36,11 @@ const publicRoutes = [
           },
         ],
       },
+      {
+        path: 'map',
+        name: 'map',
+        component: () => import('@/views/public/MapSearchHouse.vue'),
+      }
     ],
   },
 ]

@@ -7,7 +7,11 @@
         </b-col>
         <b-col cols="5">
           <ul style="float: right">
-            <li v-for="{ title, href } in tabs" :key="title" class="header-li">
+            <li
+              v-for="{ title, href } in tabs"
+              :key="title"
+              class="header-li"
+            >
               <a
                 :href="href"
                 v-text="title"
@@ -18,19 +22,48 @@
           </ul>
         </b-col>
         <b-col cols="2">
-          <ul v-if="$store.state.user_info" style="float: left">
-            <li class="header-li" style="float: left">
-              <a href="/profile" class="header-url">
-                <b-icon icon="person" font-scale="1.5"></b-icon>关于我</a
+          <ul
+            v-if="$store.state.user_info"
+            style="float: left"
+          >
+            <li
+              class="header-li"
+              style="float: left"
+            >
+              <a
+                href="/profile"
+                class="header-url"
               >
+                <b-icon
+                  icon="person"
+                  font-scale="1.5"
+                ></b-icon>关于我
+              </a>
             </li>
           </ul>
-          <ul v-else style="float: left">
-            <li class="header-li" style="float: left">
-              <a class="header-url" style="cursor: pointer">登陆</a>
+          <ul
+            v-else
+            style="float: left"
+          >
+            <li
+              class="header-li"
+              style="float: left"
+            >
+              <a
+                class="header-url"
+                style="cursor: pointer"
+                href="/login"
+              >登陆</a>
             </li>
-            <li class="header-li" style="float: left">
-              <a class="header-url" style="cursor: pointer">注册</a>
+            <li
+              class="header-li"
+              style="float: left"
+            >
+              <a
+                class="header-url"
+                style="cursor: pointer"
+                href="/register"
+              >注册</a>
             </li>
           </ul>
         </b-col>
@@ -41,7 +74,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       tabs: this.$store.state.tabs,
     }
