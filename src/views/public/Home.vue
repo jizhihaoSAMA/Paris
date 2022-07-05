@@ -4,8 +4,14 @@
       id="home-background-image"
       :style="'height:' + this.height + 'px'"
     ></div>
-    <b-container id="home-nav" :style="'height:' + this.height + 'px'">
-      <b-row style="padding: 40px 0" align-v="center">
+    <b-container
+      id="home-nav"
+      :style="'height:' + this.height + 'px'"
+    >
+      <b-row
+        style="padding: 40px 0"
+        align-v="center"
+      >
         <b-col cols="2">
           <b-img
             :src="require('../../assets/logo_white.png')"
@@ -14,7 +20,10 @@
           />
         </b-col>
         <b-col cols="10">
-          <b-tabs align="right" pills>
+          <b-tabs
+            align="right"
+            pills
+          >
             <b-tab
               v-for="{ title, href } in tabs"
               :key="title"
@@ -40,7 +49,10 @@
         </b-col>
       </b-row>
       <b-row align-h="center">
-        <b-col cols="8" class="text-center">
+        <b-col
+          cols="8"
+          class="text-center"
+        >
           <search-box />
         </b-col>
       </b-row>
@@ -66,7 +78,10 @@
       </div>
       <div :class="show_intro ? 'fade-in-anime downward-anime' : ''">
         <b-container fluid>
-          <b-row align-h="center" align-content="">
+          <b-row
+            align-h="center"
+            align-content=""
+          >
             <b-col
               cols="3"
               v-for="{ icon, title, description, link } in descriptions"
@@ -81,12 +96,21 @@
             >
               <b-row align-h="center">
                 <b-col cols="4">
-                  <b-icon :icon="icon" font-scale="2.5"></b-icon>
+                  <b-icon
+                    :icon="icon"
+                    font-scale="2.5"
+                  ></b-icon>
                 </b-col>
               </b-row>
-              <h3 v-text="title" class="mt-4"></h3>
+              <h3
+                v-text="title"
+                class="mt-4"
+              ></h3>
               <b-row class="mt-5">
-                <b-col cols="12" v-html="description"></b-col>
+                <b-col
+                  cols="12"
+                  v-html="description"
+                ></b-col>
               </b-row>
               <div class="mt-5">
                 <b-link
@@ -109,11 +133,11 @@
 <script>
 // @ is an alias to /src
 import searchBox from '@/components/SearchBox'
-
+import request from '@/request/request'
 export default {
-  data() {
+  data () {
     return {
-      house_count: '我也不知道多少',
+      house_count: 0,
       show_title: false,
       show_intro: false,
       height: null,
@@ -150,17 +174,27 @@ export default {
   },
   name: 'Home',
   methods: {
-    fade_in(v, variable) {
+    fade_in (v, variable) {
       // console.log(v, variable)
       eval('this.' + variable + ' = ' + v)
     },
+    getTotalAmount () {
+      request.get("/counter", {
+        params: {
+          "zoomLevel": 1
+        }
+      }).then(res => {
+        this.house_count = res.data.data.total
+      })
+    }
   },
   components: {
     searchBox,
   },
-  mounted() {
+  mounted () {
     this.height = document.documentElement.clientHeight
     // console.log(this.height)
+    this.getTotalAmount()
   },
 }
 </script>

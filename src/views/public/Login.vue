@@ -3,7 +3,7 @@
     class=""
     id=""
   >
-    <top-navbar />
+    <top-navbar v-if="!this.$route.meta.admin" />
     <b-container class="w-50 p-3">
       <b-card
         title="登录"
@@ -22,7 +22,7 @@
           <b-col cols="10">
             <b-form-input
               :type="v[1]"
-              v-model="$data[v[0]]"
+              v-model="$data['user'][v[0]]"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -51,6 +51,7 @@
 <script>
 import TopNavbar from "../../components/TopNavbar.vue"
 import request from "@/request/request.js"
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -59,19 +60,36 @@ export default {
         用户名: ['username', 'text'],
         密码: ['password', 'password']
       },
-      username: "",
-      password: "",
+      user: {
+        username: "",
+        password: ""
+      },
     }
   },
   components: { TopNavbar },
   methods: {
-    login () {
-      console.log(this.$store)
-      request.post('/login', {
-        username: this.username,
-        password: this.password,
-      }).then((res) => {
+    ...mapActions('userModule', { userLogin: 'login' }),
+    ...mapActions('adminModule', { adminLogin: 'login' }),
 
+    login () {
+      if (this.$route.meta.admin) {
+        this.adminLogin(this.user).then(res => {
+          this.toast("通知", "登录成功")
+          setTimeout(() => {
+            this.$router.push({ path: "/admin" })
+          }, 1000)
+        }).catch(err => {
+          this.toast("登录失败", err.data.msg, 'danger')
+        })
+        return
+      }
+      this.userLogin(this.user).then(res => {
+        this.toast("通知", "登录成功")
+        setTimeout(() => {
+          this.$router.push({ name: "profile" })
+        }, 1000)
+      }).catch(err => {
+        this.toast("登录失败", err.data.msg, 'danger')
       })
     }
   }

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import userModule from './module/user';
+import adminModule from './module/admin'
+import storageService from '@/request/storageService'
 
 Vue.use(Vuex)
 
@@ -19,19 +21,31 @@ export default new Vuex.Store({
       },
       {
         title: '发布房源',
-        href: '/post',
+        href: '/postHouse',
         name: 'post',
       },
       {
-        title: '工具',
-        href: '/tool',
-        name: 'tool',
+        title: '地图找房',
+        href: '/index/map',
+        name: 'map',
       },
+      {
+        title: '房屋趋势',
+        href: '/index/hot',
+        name: 'hot',
+      }
     ],
+    showRightNavbar: storageService.get("showRightNavbar") != null ? storageService.get("showRightNavbar") : 'true',
   },
-  mutations: {},
+  mutations: {
+    setRightNavbar (state, val) {
+      storageService.set("showRightNavbar", val)
+      state.showRightNavbar = String(val)
+    },
+  },
   actions: {},
   modules: {
     userModule,
+    adminModule,
   },
 })

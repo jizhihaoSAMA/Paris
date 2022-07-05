@@ -5,7 +5,7 @@ import Vue from 'vue';
 import router from '../router';
 
 const service = axios.create({
-    baseURL: 'http://localhost:8081/',
+    baseURL: 'http://localhost:8081/admin/',
     timeout: 1000 * 5,
 });
 
@@ -13,7 +13,7 @@ const service = axios.create({
 // 使 每次 登录的时候都是最新的token
 service.interceptors.request.use((config) => {
     // 为请求头赋值，传一个对象
-    Object.assign(config.headers, { Authorization: `Bearer ${storageService.get(storageService.USER_TOKEN)}` });
+    Object.assign(config.headers, { Authorization: `Bearer ${storageService.get(storageService.ADMIN_TOKEN)}` });
     return config;
 }, error => {
     return Promise.reject(error);
@@ -28,7 +28,8 @@ service.interceptors.response.use((response) => {
             "登录信息过期，请重新登录", { title: "提醒", variant: "danger" }
         )
         setTimeout(() => {
-            store.dispatch('userModule/logout')
+            store.dispatch('adminModule/logout')
+            router.push("/admin/login")
         }, 1500)
     }
     return Promise.reject(error.response)

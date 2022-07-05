@@ -4,7 +4,14 @@ const userRoutes = [{
     meta: {
         required_auth: true,
     },
-    components: () => import("@/views/user/Profile"),
+    component: () => import("@/views/user/Profile"),
+}, {
+    path: '/postHouse',
+    name: 'postHouse',
+    meta: {
+        required_auth: true,
+    },
+    component: () => import("@/views/user/PostHouse.vue")
 }]
 
 export default userRoutes

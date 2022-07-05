@@ -21,11 +21,11 @@
             </li>
           </ul>
         </b-col>
-        <b-col cols="2">
-          <ul
-            v-if="$store.state.user_info"
-            style="float: left"
-          >
+        <b-col
+          cols="2"
+          v-if="$store.state.userModule.userInfo"
+        >
+          <ul style="float:left">
             <li
               class="header-li"
               style="float: left"
@@ -40,11 +40,28 @@
                 ></b-icon>关于我
               </a>
             </li>
+            <li
+              class="header-li"
+              style="float: left"
+            >
+              <a
+                @click="logout()"
+                class="header-url"
+                style="cursor:pointer"
+              >
+                <b-icon
+                  icon="box-arrow-right"
+                  font-scale="1.5"
+                ></b-icon>登出
+              </a>
+            </li>
           </ul>
-          <ul
-            v-else
-            style="float: left"
-          >
+        </b-col>
+        <b-col
+          cols="2"
+          v-else
+        >
+          <ul style="float: left">
             <li
               class="header-li"
               style="float: left"
@@ -67,18 +84,34 @@
             </li>
           </ul>
         </b-col>
+
       </b-row>
     </b-container>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
       tabs: this.$store.state.tabs,
     }
   },
+  methods: {
+    ...mapActions('userModule', { userLogout: 'logout' }),
+    logout () {
+      this.toast("通知", "您已登出账号")
+      setTimeout(() => {
+        if (this.$route.meta.required_auth) {
+          this.$router.replace({ name: "login" })
+        }
+        this.userLogout()
+      }, 1000)
+
+    }
+  }
 }
 </script>
 

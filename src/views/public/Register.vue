@@ -95,8 +95,7 @@ export default {
           this.$router.push({ name: "login" })
         }, 1000)
       }).catch((err) => {
-        this.toast('注册失败', err.response.data.msg, 'danger')
-        console.log(err.response.data.msg)
+        this.toast('注册失败', err.data.msg, 'danger')
       })
 
     },
@@ -111,7 +110,7 @@ export default {
       }).then((res) => {
         this.toast("通知", "消息发送成功", 'success')
       }).catch((err) => {
-        this.toast("通知", err.response.data.msg, 'danger')
+        this.toast("通知", err.data.msg, 'danger')
       })
     }
   }

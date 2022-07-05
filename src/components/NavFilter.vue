@@ -2,40 +2,44 @@
   <b-container>
     <hr class="split-line" />
     <b-row>
-      <b-col cols="1"><p class="filter-header">区域:</p></b-col>
-      <b-col cols="11"
-        ><b-tabs pills>
+      <b-col cols="1">
+        <p class="filter-header">区域:</p>
+      </b-col>
+      <b-col cols="11">
+        <b-tabs pills>
           <b-tab
             title="全部"
             @click="
               () => {
                 let new_query = JSON.parse(JSON.stringify(this.$route.query))
-                delete new_query.street_code
-                delete new_query.area_code
+                delete new_query.bc
+                delete new_query.area
                 $router.replace({ query: { ...new_query } })
               }
             "
           ></b-tab>
           <b-tab
-            v-for="(value, key) in location"
-            :key="value.code"
+            v-for="(values, key) in location"
+            :key="key"
             :title="key"
             @click="
-              $router.replace({
+             () => {
+               $data.bc = '不限'
+                $router.replace({
                 query: {
                   ...$route.query,
-                  area_code: value.code,
+                  area: key,
+                  bc:'不限'
                 },
               })
+             }
             "
-            :active="$route.query.area_code == value.code"
+            :active="$route.query.area == key"
           >
             <b-form-group style="padding: 0.5rem">
               <b-form-radio
-                v-for="(street_code, street_name) in value.streets"
-                :key="street_code"
-                v-model="selected_street"
-                :value="street_code"
+                value="不限"
+                v-model="bc"
                 class="custom-control-inline"
                 size="md"
                 @change="
@@ -43,34 +47,60 @@
                     path: $router.path,
                     query: {
                       ...$route.query,
-                      area_code: $route.query.area_code,
-                      street_code: street_code,
+                      area: $route.query.area,
+                      bc: '不限',
                     },
                   })
                 "
-                ><span v-text="street_name" style="font-size: 0.9rem"></span
-              ></b-form-radio>
+              >
+                <span style="font-size: 0.9rem">不限</span>
+              </b-form-radio>
+              <b-form-radio
+                v-for="value in values"
+                :key="value.name"
+                v-model="bc"
+                :value="value.name"
+                class="custom-control-inline"
+                size="md"
+                @change="
+                  $router.replace({
+                    path: $router.path,
+                    query: {
+                      ...$route.query,
+                      area: $route.query.area,
+                      bc: value.name,
+                    },
+                  })
+                "
+              ><span
+                  v-text="value.name"
+                  style="font-size: 0.9rem"
+                ></span></b-form-radio>
             </b-form-group>
-          </b-tab> </b-tabs
-      ></b-col>
+          </b-tab>
+        </b-tabs>
+      </b-col>
     </b-row>
     <hr class="split-line" />
     <b-row>
-      <b-col cols="1"><p class="filter-header">租房类型:</p></b-col>
+      <b-col cols="1">
+        <p class="filter-header">租房类型:</p>
+      </b-col>
       <b-col cols="11">
         <b-tabs pills>
           <b-tab
-            v-for="{ type, text } in rent_type"
+            v-for="{ type, text } in rentTypeOptions"
             @click="
               $router.replace({
                 query: {
                   ...$route.query,
-                  type: type,
+                  rentType: type,
                 },
               })
             "
             :title="text"
             :key="text"
+            :active="$route.query.rentType == type"
           >
           </b-tab>
         </b-tabs>
@@ -78,15 +108,17 @@
     </b-row>
     <hr class="split-line" />
     <b-row>
-      <b-col cols="1"><p class="filter-header">租金:</p></b-col>
+      <b-col cols="1">
+        <p class="filter-header">租金:</p>
+      </b-col>
       <b-col cols="11">
         <b-form-group
           style="padding: 0.3rem"
           @change="
             () => {
               let new_query = JSON.parse(JSON.stringify(this.$route.query))
-              delete new_query.price_start
-              delete new_query.price_end
+              delete new_query.priceStart
+              delete new_query.priceEnd
               $router.replace({
                 query: {
                   ...new_query,
@@ -102,8 +134,8 @@
             @change="
               () => {
                 let new_query = JSON.parse(JSON.stringify(this.$route.query))
-                delete new_query.price_end
-                delete new_query.price_start
+                delete new_query.priceEnd
+                delete new_query.priceStart
                 $router.replace({
                   query: {
                     ...new_query,
@@ -111,8 +143,7 @@
                 })
               }
             "
-            >不限</b-form-radio
-          >
+          >不限</b-form-radio>
           <b-form-radio
             v-for="(item, index) in rent_money"
             :key="item"
@@ -121,19 +152,16 @@
             :value="item + ',' + rent_money[index + 1]"
             @change="
               () => {
-                _ = price_range.split(',')
-                start = _[0]
-                end = _[1]
+                var [start, end] = price_range.split(',')
                 $router.replace({
-                  query: {
-                    ...$route.query,
-                    price_start: start,
-                    price_end: end,
-                  },
+                  query: Object.assign({}, 
+                    {...$route.query},
+                    { priceStart: start },
+                    end && {priceEnd: end}),
                 })
               }
             "
-            ><span
+          ><span
               v-text="
                 item +
                 (index != rent_money.length - 1
@@ -141,14 +169,15 @@
                   : ' 以上')
               "
               style="font-size: 0.9rem"
-            ></span
-          ></b-form-radio>
+            ></span></b-form-radio>
         </b-form-group>
       </b-col>
     </b-row>
     <hr class="split-line" />
     <b-row>
-      <b-col cols="1"><p class="filter-header">房屋特色:</p></b-col>
+      <b-col cols="1">
+        <p class="filter-header">房屋特色:</p>
+      </b-col>
       <b-col cols="11">
         <b-button
           style="float: right"
@@ -159,8 +188,8 @@
               changed_special_tag()
             }
           "
-          >清空筛选</b-button
-        ><b-form-checkbox-group
+        >清空筛选</b-button>
+        <b-form-checkbox-group
           :options="special_tag"
           value-field="tag"
           text-field="text"
@@ -176,16 +205,15 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      selected_street: null,
+      bc: this.$route.query.bc,
       price_range:
-        this.$route.query.price_start || this.$route.query.price_end
-          ? this.$route.query.price_start + ',' + this.$route.query.price_end
+        this.$route.query.priceStart || this.$route.query.priceEnd
+          ? this.$route.query.priceStart + ',' + this.$route.query.priceEnd
           : null,
       location: require('@/assets/city_name2code.json'),
-
-      rent_type: [
+      rentTypeOptions: [
         {
           type: 'all',
           text: '不限',
@@ -203,34 +231,26 @@ export default {
       special_tag: [
         {
           text: '带独立卫生间',
-          tag: 'special_toilet',
+          tag: 'hasSingleToilet',
         },
         {
           text: '带独立阳台',
-          tag: 'special_balcony',
+          tag: 'hasSingleBalcony',
         },
         {
           text: '有电梯',
-          tag: 'lift',
+          tag: 'hasLift',
         },
         {
-          text: '新小区',
-          tag: 'new_neighborhood',
-        },
-        {
-          text: '近地铁',
-          tag: 'nearby_subway',
-        },
-        {
-          text: '绿化率高',
-          tag: 'hight_greening_rate',
+          text: '可短租',
+          tag: 'supportShortTermRent',
         },
       ],
       special_tag_selected: [],
     }
   },
   methods: {
-    changed_special_tag() {
+    changed_special_tag () {
       let new_query = JSON.parse(JSON.stringify(this.$route.query))
       this.special_tag.forEach((item, index) => {
         if (this.special_tag_selected.indexOf(item.tag) != -1) {
@@ -245,13 +265,13 @@ export default {
         },
       })
     },
-    get_current_selected_tag() {
+    get_current_selected_tag () {
       return this.special_tag
         .map(({ tag }) => tag)
         .filter((item) => this.$route.query[item] != undefined)
     },
   },
-  mounted() {
+  mounted () {
     this.special_tag_selected = this.get_current_selected_tag()
   },
 }

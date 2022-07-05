@@ -7,6 +7,13 @@ const USER_PREFIX = `${PREFIX}user_`;
 const USER_TOKEN = `${USER_PREFIX}token`;
 const USER_INFO = `${USER_PREFIX}info`;
 
+
+// admin
+const ADMIN_PREFIX = `${PREFIX}admin_`;
+const ADMIN_TOKEN = `${ADMIN_PREFIX}token`;
+const ADMIN_INFO = `${ADMIN_PREFIX}info`;
+
+
 // 储存
 const set = (key, data) => {
     localStorage.setItem(key, data)
@@ -20,4 +27,6 @@ export default {
     get,
     USER_TOKEN,
     USER_INFO,
+    ADMIN_TOKEN,
+    ADMIN_INFO
 };

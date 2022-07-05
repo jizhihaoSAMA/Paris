@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div v-if="!$route.meta.admin">
     <right-navbar />
     <router-view />
     <page-footer />
+  </div>
+  <div v-else>
+
+    <router-view />
   </div>
 </template>
 
